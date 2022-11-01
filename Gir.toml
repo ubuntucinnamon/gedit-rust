@@ -1,0 +1,45 @@
+[options]
+girs_directories = ["../gir-files"]
+library = "Gedit"
+version = "3.0"
+min_cfg_version = "41"
+target_path = "."
+work_mode = "normal"
+generate_builder = true
+generate_safety_asserts = true
+deprecate_by_min_version = true
+single_version_file = true
+
+generate = [
+	"Gedit.App",
+	"Gedit.AppActivatable",
+	"Gedit.Document",
+	"Gedit.MenuExtension",
+	"Gedit.Message",
+	"Gedit.MessageBus",
+	"Gedit.ProgressInfoBar",
+	"Gedit.Statusbar",
+	"Gedit.Tab",
+	"Gedit.TabState",
+	"Gedit.View",
+	"Gedit.ViewActivatable",
+	"Gedit.Window",
+	"Gedit.WindowActivatable",
+	"Gedit.WindowState",
+]
+
+manual = [
+	"Gdk.Screen",
+	"Gio.Menu",
+	"Gio.File",
+	"Gtk.Application",
+	"Gtk.ApplicationWindow",
+	"Gtk.Bin",
+	"Gtk.Container",
+	"Gtk.Infobar",
+	"Gtk.Statusbar",
+	"Gtk.TextBuffer",
+	"Gtk.TextView",
+	"Gtk.Widget",
+	"Gtk.Window",
+]
