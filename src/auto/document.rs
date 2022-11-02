@@ -15,7 +15,7 @@ use std::mem::transmute;
 
 glib::wrapper! {
     #[doc(alias = "GeditDocument")]
-    pub struct Document(Object<ffi::GeditDocument, ffi::GeditDocumentClass>) @extends gtk::TextBuffer;
+    pub struct Document(Object<ffi::GeditDocument, ffi::GeditDocumentClass>) @extends gtk_source::Buffer, gtk::TextBuffer;
 
     match fn {
         type_ => || ffi::gedit_document_get_type(),
@@ -59,6 +59,15 @@ impl Default for Document {
 pub struct DocumentBuilder {
     content_type: Option<String>,
     use_gvfs_metadata: Option<bool>,
+    highlight_matching_brackets: Option<bool>,
+    highlight_syntax: Option<bool>,
+    #[cfg(any(feature = "gtk_source_v3_14", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "gtk_source_v3_14")))]
+    implicit_trailing_newline: Option<bool>,
+    language: Option<gtk_source::Language>,
+    max_undo_levels: Option<i32>,
+    //style-scheme: /*Unknown type*/,
+    //undo-manager: /*Unknown type*/,
     //tag-table: /*Unknown type*/,
     #[cfg(any(feature = "gtk_v2_8", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "gtk_v2_8")))]
@@ -84,6 +93,22 @@ if let Some(ref content_type) = self.content_type {
 if let Some(ref use_gvfs_metadata) = self.use_gvfs_metadata {
                 properties.push(("use-gvfs-metadata", use_gvfs_metadata));
             }
+if let Some(ref highlight_matching_brackets) = self.highlight_matching_brackets {
+                properties.push(("highlight-matching-brackets", highlight_matching_brackets));
+            }
+if let Some(ref highlight_syntax) = self.highlight_syntax {
+                properties.push(("highlight-syntax", highlight_syntax));
+            }
+        #[cfg(any(feature = "gtk_source_v3_14", feature = "dox"))]
+if let Some(ref implicit_trailing_newline) = self.implicit_trailing_newline {
+                properties.push(("implicit-trailing-newline", implicit_trailing_newline));
+            }
+if let Some(ref language) = self.language {
+                properties.push(("language", language));
+            }
+if let Some(ref max_undo_levels) = self.max_undo_levels {
+                properties.push(("max-undo-levels", max_undo_levels));
+            }
         #[cfg(any(feature = "gtk_v2_8", feature = "dox"))]
 if let Some(ref text) = self.text {
                 properties.push(("text", text));
@@ -102,6 +127,33 @@ if let Some(ref text) = self.text {
         self
     }
 
+    pub fn highlight_matching_brackets(mut self, highlight_matching_brackets: bool) -> Self {
+        self.highlight_matching_brackets = Some(highlight_matching_brackets);
+        self
+    }
+
+    pub fn highlight_syntax(mut self, highlight_syntax: bool) -> Self {
+        self.highlight_syntax = Some(highlight_syntax);
+        self
+    }
+
+    #[cfg(any(feature = "gtk_source_v3_14", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "gtk_source_v3_14")))]
+    pub fn implicit_trailing_newline(mut self, implicit_trailing_newline: bool) -> Self {
+        self.implicit_trailing_newline = Some(implicit_trailing_newline);
+        self
+    }
+
+    pub fn language(mut self, language: &impl IsA<gtk_source::Language>) -> Self {
+        self.language = Some(language.clone().upcast());
+        self
+    }
+
+    pub fn max_undo_levels(mut self, max_undo_levels: i32) -> Self {
+        self.max_undo_levels = Some(max_undo_levels);
+        self
+    }
+
     #[cfg(any(feature = "gtk_v2_8", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "gtk_v2_8")))]
     pub fn text(mut self, text: &str) -> Self {
@@ -115,13 +167,13 @@ pub trait DocumentExt: 'static {
     #[doc(alias = "get_content_type")]
     fn content_type(&self) -> Option<glib::GString>;
 
-    //#[doc(alias = "gedit_document_get_file")]
-    //#[doc(alias = "get_file")]
-    //fn file(&self) -> /*Ignored*/Option<gtk_source::File>;
+    #[doc(alias = "gedit_document_get_file")]
+    #[doc(alias = "get_file")]
+    fn file(&self) -> Option<gtk_source::File>;
 
-    //#[doc(alias = "gedit_document_get_language")]
-    //#[doc(alias = "get_language")]
-    //fn language(&self) -> /*Ignored*/Option<gtk_source::Language>;
+    #[doc(alias = "gedit_document_get_language")]
+    #[doc(alias = "get_language")]
+    fn language(&self) -> Option<gtk_source::Language>;
 
     #[doc(alias = "gedit_document_get_metadata")]
     #[doc(alias = "get_metadata")]
@@ -131,9 +183,9 @@ pub trait DocumentExt: 'static {
     #[doc(alias = "get_mime_type")]
     fn mime_type(&self) -> Option<glib::GString>;
 
-    //#[doc(alias = "gedit_document_get_search_context")]
-    //#[doc(alias = "get_search_context")]
-    //fn search_context(&self) -> /*Ignored*/Option<gtk_source::SearchContext>;
+    #[doc(alias = "gedit_document_get_search_context")]
+    #[doc(alias = "get_search_context")]
+    fn search_context(&self) -> Option<gtk_source::SearchContext>;
 
     #[doc(alias = "gedit_document_get_short_name_for_display")]
     #[doc(alias = "get_short_name_for_display")]
@@ -151,14 +203,14 @@ pub trait DocumentExt: 'static {
     #[doc(alias = "gedit_document_is_untouched")]
     fn is_untouched(&self) -> bool;
 
-    //#[doc(alias = "gedit_document_set_language")]
-    //fn set_language(&self, lang: /*Ignored*/Option<&gtk_source::Language>);
+    #[doc(alias = "gedit_document_set_language")]
+    fn set_language(&self, lang: Option<&impl IsA<gtk_source::Language>>);
 
     //#[doc(alias = "gedit_document_set_metadata")]
     //fn set_metadata(&self, first_key: &str, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs);
 
-    //#[doc(alias = "gedit_document_set_search_context")]
-    //fn set_search_context(&self, search_context: /*Ignored*/Option<&gtk_source::SearchContext>);
+    #[doc(alias = "gedit_document_set_search_context")]
+    fn set_search_context(&self, search_context: Option<&impl IsA<gtk_source::SearchContext>>);
 
     #[doc(alias = "content-type")]
     fn set_content_type(&self, content_type: Option<&str>);
@@ -206,13 +258,17 @@ impl<O: IsA<Document>> DocumentExt for O {
         }
     }
 
-    //fn file(&self) -> /*Ignored*/Option<gtk_source::File> {
-    //    unsafe { TODO: call ffi:gedit_document_get_file() }
-    //}
+    fn file(&self) -> Option<gtk_source::File> {
+        unsafe {
+            from_glib_none(ffi::gedit_document_get_file(self.as_ref().to_glib_none().0))
+        }
+    }
 
-    //fn language(&self) -> /*Ignored*/Option<gtk_source::Language> {
-    //    unsafe { TODO: call ffi:gedit_document_get_language() }
-    //}
+    fn language(&self) -> Option<gtk_source::Language> {
+        unsafe {
+            from_glib_none(ffi::gedit_document_get_language(self.as_ref().to_glib_none().0))
+        }
+    }
 
     fn metadata(&self, key: &str) -> Option<glib::GString> {
         unsafe {
@@ -226,9 +282,11 @@ impl<O: IsA<Document>> DocumentExt for O {
         }
     }
 
-    //fn search_context(&self) -> /*Ignored*/Option<gtk_source::SearchContext> {
-    //    unsafe { TODO: call ffi:gedit_document_get_search_context() }
-    //}
+    fn search_context(&self) -> Option<gtk_source::SearchContext> {
+        unsafe {
+            from_glib_none(ffi::gedit_document_get_search_context(self.as_ref().to_glib_none().0))
+        }
+    }
 
     fn short_name_for_display(&self) -> Option<glib::GString> {
         unsafe {
@@ -260,17 +318,21 @@ impl<O: IsA<Document>> DocumentExt for O {
         }
     }
 
-    //fn set_language(&self, lang: /*Ignored*/Option<&gtk_source::Language>) {
-    //    unsafe { TODO: call ffi:gedit_document_set_language() }
-    //}
+    fn set_language(&self, lang: Option<&impl IsA<gtk_source::Language>>) {
+        unsafe {
+            ffi::gedit_document_set_language(self.as_ref().to_glib_none().0, lang.map(|p| p.as_ref()).to_glib_none().0);
+        }
+    }
 
     //fn set_metadata(&self, first_key: &str, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) {
     //    unsafe { TODO: call ffi:gedit_document_set_metadata() }
     //}
 
-    //fn set_search_context(&self, search_context: /*Ignored*/Option<&gtk_source::SearchContext>) {
-    //    unsafe { TODO: call ffi:gedit_document_set_search_context() }
-    //}
+    fn set_search_context(&self, search_context: Option<&impl IsA<gtk_source::SearchContext>>) {
+        unsafe {
+            ffi::gedit_document_set_search_context(self.as_ref().to_glib_none().0, search_context.map(|p| p.as_ref()).to_glib_none().0);
+        }
+    }
 
     fn set_content_type(&self, content_type: Option<&str>) {
         glib::ObjectExt::set_property(self.as_ref(),"content-type", &content_type)

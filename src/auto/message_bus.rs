@@ -35,7 +35,7 @@ impl MessageBus {
 
     #[doc(alias = "gedit_message_bus_get_default")]
     #[doc(alias = "get_default")]
-    pub fn default() -> Option<MessageBus> {
+    #[allow(clippy::should_implement_trait)]    pub fn default() -> Option<MessageBus> {
         assert_initialized_main_thread!();
         unsafe {
             from_glib_none(ffi::gedit_message_bus_get_default())

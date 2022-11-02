@@ -721,11 +721,11 @@ pub trait WindowExt: 'static {
     #[doc(alias = "gedit_window_create_tab")]
     fn create_tab(&self, jump_to: bool) -> Option<Tab>;
 
-    //#[doc(alias = "gedit_window_create_tab_from_location")]
-    //fn create_tab_from_location(&self, location: &impl IsA<gio::File>, encoding: /*Ignored*/Option<&gtk_source::Encoding>, line_pos: i32, column_pos: i32, create: bool, jump_to: bool) -> Option<Tab>;
+    #[doc(alias = "gedit_window_create_tab_from_location")]
+    fn create_tab_from_location(&self, location: &impl IsA<gio::File>, encoding: Option<&gtk_source::Encoding>, line_pos: i32, column_pos: i32, create: bool, jump_to: bool) -> Option<Tab>;
 
     //#[doc(alias = "gedit_window_create_tab_from_stream")]
-    //fn create_tab_from_stream(&self, stream: /*Ignored*/&gio::InputStream, encoding: /*Ignored*/Option<&gtk_source::Encoding>, line_pos: i32, column_pos: i32, jump_to: bool) -> Option<Tab>;
+    //fn create_tab_from_stream(&self, stream: /*Ignored*/&gio::InputStream, encoding: Option<&gtk_source::Encoding>, line_pos: i32, column_pos: i32, jump_to: bool) -> Option<Tab>;
 
     #[doc(alias = "gedit_window_get_active_document")]
     #[doc(alias = "get_active_document")]
@@ -826,11 +826,13 @@ impl<O: IsA<Window>> WindowExt for O {
         }
     }
 
-    //fn create_tab_from_location(&self, location: &impl IsA<gio::File>, encoding: /*Ignored*/Option<&gtk_source::Encoding>, line_pos: i32, column_pos: i32, create: bool, jump_to: bool) -> Option<Tab> {
-    //    unsafe { TODO: call ffi:gedit_window_create_tab_from_location() }
-    //}
+    fn create_tab_from_location(&self, location: &impl IsA<gio::File>, encoding: Option<&gtk_source::Encoding>, line_pos: i32, column_pos: i32, create: bool, jump_to: bool) -> Option<Tab> {
+        unsafe {
+            from_glib_none(ffi::gedit_window_create_tab_from_location(self.as_ref().to_glib_none().0, location.as_ref().to_glib_none().0, encoding.to_glib_none().0, line_pos, column_pos, create.into_glib(), jump_to.into_glib()))
+        }
+    }
 
-    //fn create_tab_from_stream(&self, stream: /*Ignored*/&gio::InputStream, encoding: /*Ignored*/Option<&gtk_source::Encoding>, line_pos: i32, column_pos: i32, jump_to: bool) -> Option<Tab> {
+    //fn create_tab_from_stream(&self, stream: /*Ignored*/&gio::InputStream, encoding: Option<&gtk_source::Encoding>, line_pos: i32, column_pos: i32, jump_to: bool) -> Option<Tab> {
     //    unsafe { TODO: call ffi:gedit_window_create_tab_from_stream() }
     //}
 

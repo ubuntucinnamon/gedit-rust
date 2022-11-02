@@ -30,8 +30,10 @@ generate = [
 
 manual = [
 	"Gdk.Screen",
+
 	"Gio.Menu",
 	"Gio.File",
+
 	"Gtk.Application",
 	"Gtk.ApplicationWindow",
 	"Gtk.Bin",
@@ -42,4 +44,13 @@ manual = [
 	"Gtk.TextView",
 	"Gtk.Widget",
 	"Gtk.Window",
+
+	"GtkSource.Buffer",
+	"GtkSource.CompressionType",
+	"GtkSource.Encoding",
+	"GtkSource.File",
+	"GtkSource.Language",
+	"GtkSource.NewlineType",
+	"GtkSource.SearchContext",
+	"GtkSource.View",
 ]

@@ -215,6 +215,8 @@ name = "gedit"
 version = "0.1.0"
 dependencies = [
  "bitflags",
+ "gdk",
+ "gdk-sys",
  "gedit-sys",
  "gio",
  "gio-sys 0.10.0",

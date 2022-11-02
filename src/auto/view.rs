@@ -13,7 +13,7 @@ use std::fmt;
 
 glib::wrapper! {
     #[doc(alias = "GeditView")]
-    pub struct View(Object<ffi::GeditView, ffi::GeditViewClass>) @extends gtk::TextView, gtk::Container, gtk::Widget;
+    pub struct View(Object<ffi::GeditView, ffi::GeditViewClass>) @extends gtk_source::View, gtk::TextView, gtk::Container, gtk::Widget;
 
     match fn {
         type_ => || ffi::gedit_view_get_type(),
@@ -55,6 +55,21 @@ impl Default for View {
         /// [builder-pattern]: https://doc.rust-lang.org/1.0.0/style/ownership/builders.html
 #[must_use = "The builder must be built to be used"]
 pub struct ViewBuilder {
+    auto_indent: Option<bool>,
+    //background-pattern: /*Unknown type*/,
+    highlight_current_line: Option<bool>,
+    indent_on_tab: Option<bool>,
+    indent_width: Option<i32>,
+    insert_spaces_instead_of_tabs: Option<bool>,
+    right_margin_position: Option<u32>,
+    show_line_marks: Option<bool>,
+    show_line_numbers: Option<bool>,
+    show_right_margin: Option<bool>,
+    #[cfg(any(feature = "gtk_source_v3_18", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "gtk_source_v3_18")))]
+    smart_backspace: Option<bool>,
+    //smart-home-end: /*Unknown type*/,
+    tab_width: Option<u32>,
     accepts_tab: Option<bool>,
     #[cfg(any(feature = "gtk_v3_18", feature = "dox"))]
     #[cfg_attr(feature = "dox", doc(cfg(feature = "gtk_v3_18")))]
@@ -165,6 +180,40 @@ impl ViewBuilder {
     #[must_use = "Building the object from the builder is usually expensive and is not expected to have side effects"]
     pub fn build(self) -> View {
         let mut properties: Vec<(&str, &dyn ToValue)> = vec![];
+if let Some(ref auto_indent) = self.auto_indent {
+                properties.push(("auto-indent", auto_indent));
+            }
+if let Some(ref highlight_current_line) = self.highlight_current_line {
+                properties.push(("highlight-current-line", highlight_current_line));
+            }
+if let Some(ref indent_on_tab) = self.indent_on_tab {
+                properties.push(("indent-on-tab", indent_on_tab));
+            }
+if let Some(ref indent_width) = self.indent_width {
+                properties.push(("indent-width", indent_width));
+            }
+if let Some(ref insert_spaces_instead_of_tabs) = self.insert_spaces_instead_of_tabs {
+                properties.push(("insert-spaces-instead-of-tabs", insert_spaces_instead_of_tabs));
+            }
+if let Some(ref right_margin_position) = self.right_margin_position {
+                properties.push(("right-margin-position", right_margin_position));
+            }
+if let Some(ref show_line_marks) = self.show_line_marks {
+                properties.push(("show-line-marks", show_line_marks));
+            }
+if let Some(ref show_line_numbers) = self.show_line_numbers {
+                properties.push(("show-line-numbers", show_line_numbers));
+            }
+if let Some(ref show_right_margin) = self.show_right_margin {
+                properties.push(("show-right-margin", show_right_margin));
+            }
+        #[cfg(any(feature = "gtk_source_v3_18", feature = "dox"))]
+if let Some(ref smart_backspace) = self.smart_backspace {
+                properties.push(("smart-backspace", smart_backspace));
+            }
+if let Some(ref tab_width) = self.tab_width {
+                properties.push(("tab-width", tab_width));
+            }
 if let Some(ref accepts_tab) = self.accepts_tab {
                 properties.push(("accepts-tab", accepts_tab));
             }
@@ -327,6 +376,63 @@ if let Some(ref width_request) = self.width_request {
             }
         glib::Object::new::<View>(&properties)
 
+    }
+
+    pub fn auto_indent(mut self, auto_indent: bool) -> Self {
+        self.auto_indent = Some(auto_indent);
+        self
+    }
+
+    pub fn highlight_current_line(mut self, highlight_current_line: bool) -> Self {
+        self.highlight_current_line = Some(highlight_current_line);
+        self
+    }
+
+    pub fn indent_on_tab(mut self, indent_on_tab: bool) -> Self {
+        self.indent_on_tab = Some(indent_on_tab);
+        self
+    }
+
+    pub fn indent_width(mut self, indent_width: i32) -> Self {
+        self.indent_width = Some(indent_width);
+        self
+    }
+
+    pub fn insert_spaces_instead_of_tabs(mut self, insert_spaces_instead_of_tabs: bool) -> Self {
+        self.insert_spaces_instead_of_tabs = Some(insert_spaces_instead_of_tabs);
+        self
+    }
+
+    pub fn right_margin_position(mut self, right_margin_position: u32) -> Self {
+        self.right_margin_position = Some(right_margin_position);
+        self
+    }
+
+    pub fn show_line_marks(mut self, show_line_marks: bool) -> Self {
+        self.show_line_marks = Some(show_line_marks);
+        self
+    }
+
+    pub fn show_line_numbers(mut self, show_line_numbers: bool) -> Self {
+        self.show_line_numbers = Some(show_line_numbers);
+        self
+    }
+
+    pub fn show_right_margin(mut self, show_right_margin: bool) -> Self {
+        self.show_right_margin = Some(show_right_margin);
+        self
+    }
+
+    #[cfg(any(feature = "gtk_source_v3_18", feature = "dox"))]
+    #[cfg_attr(feature = "dox", doc(cfg(feature = "gtk_source_v3_18")))]
+    pub fn smart_backspace(mut self, smart_backspace: bool) -> Self {
+        self.smart_backspace = Some(smart_backspace);
+        self
+    }
+
+    pub fn tab_width(mut self, tab_width: u32) -> Self {
+        self.tab_width = Some(tab_width);
+        self
     }
 
     pub fn accepts_tab(mut self, accepts_tab: bool) -> Self {
