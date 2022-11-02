@@ -11,6 +11,92 @@ use glib::Type;
 use std::fmt;
 
 bitflags! {
+    #[doc(alias = "GeditDebugSection")]
+    pub struct DebugSection: u32 {
+        #[doc(alias = "GEDIT_NO_DEBUG")]
+        const NO_DEBUG = ffi::GEDIT_NO_DEBUG as _;
+        #[doc(alias = "GEDIT_DEBUG_VIEW")]
+        const DEBUG_VIEW = ffi::GEDIT_DEBUG_VIEW as _;
+        #[doc(alias = "GEDIT_DEBUG_PREFS")]
+        const DEBUG_PREFS = ffi::GEDIT_DEBUG_PREFS as _;
+        #[doc(alias = "GEDIT_DEBUG_WINDOW")]
+        const DEBUG_WINDOW = ffi::GEDIT_DEBUG_WINDOW as _;
+        #[doc(alias = "GEDIT_DEBUG_PANEL")]
+        const DEBUG_PANEL = ffi::GEDIT_DEBUG_PANEL as _;
+        #[doc(alias = "GEDIT_DEBUG_PLUGINS")]
+        const DEBUG_PLUGINS = ffi::GEDIT_DEBUG_PLUGINS as _;
+        #[doc(alias = "GEDIT_DEBUG_TAB")]
+        const DEBUG_TAB = ffi::GEDIT_DEBUG_TAB as _;
+        #[doc(alias = "GEDIT_DEBUG_DOCUMENT")]
+        const DEBUG_DOCUMENT = ffi::GEDIT_DEBUG_DOCUMENT as _;
+        #[doc(alias = "GEDIT_DEBUG_COMMANDS")]
+        const DEBUG_COMMANDS = ffi::GEDIT_DEBUG_COMMANDS as _;
+        #[doc(alias = "GEDIT_DEBUG_APP")]
+        const DEBUG_APP = ffi::GEDIT_DEBUG_APP as _;
+        #[doc(alias = "GEDIT_DEBUG_UTILS")]
+        const DEBUG_UTILS = ffi::GEDIT_DEBUG_UTILS as _;
+        #[doc(alias = "GEDIT_DEBUG_METADATA")]
+        const DEBUG_METADATA = ffi::GEDIT_DEBUG_METADATA as _;
+    }
+}
+
+impl fmt::Display for DebugSection {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        <Self as fmt::Debug>::fmt(self, f)
+    }
+}
+
+#[doc(hidden)]
+impl IntoGlib for DebugSection {
+    type GlibType = ffi::GeditDebugSection;
+
+    fn into_glib(self) -> ffi::GeditDebugSection {
+        self.bits()
+    }
+}
+
+#[doc(hidden)]
+impl FromGlib<ffi::GeditDebugSection> for DebugSection {
+    unsafe fn from_glib(value: ffi::GeditDebugSection) -> Self {
+        skip_assert_initialized!();
+        Self::from_bits_truncate(value)
+    }
+}
+
+impl StaticType for DebugSection {
+    fn static_type() -> Type {
+        unsafe { from_glib(ffi::gedit_debug_section_get_type()) }
+    }
+}
+
+impl glib::value::ValueType for DebugSection {
+    type Type = Self;
+}
+
+unsafe impl<'a> FromValue<'a> for DebugSection {
+    type Checker = glib::value::GenericValueTypeChecker<Self>;
+
+    unsafe fn from_value(value: &'a glib::Value) -> Self {
+        skip_assert_initialized!();
+        from_glib(glib::gobject_ffi::g_value_get_flags(value.to_glib_none().0))
+    }
+}
+
+impl ToValue for DebugSection {
+    fn to_value(&self) -> glib::Value {
+        let mut value = glib::Value::for_value_type::<Self>();
+        unsafe {
+            glib::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().0, self.into_glib());
+        }
+        value
+    }
+
+    fn value_type(&self) -> glib::Type {
+        Self::static_type()
+    }
+}
+
+bitflags! {
     #[doc(alias = "GeditWindowState")]
     pub struct WindowState: u32 {
         #[doc(alias = "GEDIT_WINDOW_STATE_NORMAL")]

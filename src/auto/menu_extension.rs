@@ -36,15 +36,19 @@ impl MenuExtension {
             }
         
 
-    //#[doc(alias = "gedit_menu_extension_append_menu_item")]
-    //pub fn append_menu_item(&self, item: /*Ignored*/&gio::MenuItem) {
-    //    unsafe { TODO: call ffi:gedit_menu_extension_append_menu_item() }
-    //}
+    #[doc(alias = "gedit_menu_extension_append_menu_item")]
+    pub fn append_menu_item(&self, item: &gio::MenuItem) {
+        unsafe {
+            ffi::gedit_menu_extension_append_menu_item(self.to_glib_none().0, item.to_glib_none().0);
+        }
+    }
 
-    //#[doc(alias = "gedit_menu_extension_prepend_menu_item")]
-    //pub fn prepend_menu_item(&self, item: /*Ignored*/&gio::MenuItem) {
-    //    unsafe { TODO: call ffi:gedit_menu_extension_prepend_menu_item() }
-    //}
+    #[doc(alias = "gedit_menu_extension_prepend_menu_item")]
+    pub fn prepend_menu_item(&self, item: &gio::MenuItem) {
+        unsafe {
+            ffi::gedit_menu_extension_prepend_menu_item(self.to_glib_none().0, item.to_glib_none().0);
+        }
+    }
 
     #[doc(alias = "gedit_menu_extension_remove_items")]
     pub fn remove_items(&self) {

@@ -13,37 +13,60 @@ single_version_file = true
 generate = [
 	"Gedit.App",
 	"Gedit.AppActivatable",
+
+	"Gedit.DebugSection",
 	"Gedit.Document",
+	"Gedit.EncodingsComboBox",
 	"Gedit.MenuExtension",
+
 	"Gedit.Message",
 	"Gedit.MessageBus",
+	"Gedit.MessageBusForeach",
+	"Gedit.MessageCallback",
+
 	"Gedit.ProgressInfoBar",
 	"Gedit.Statusbar",
+
 	"Gedit.Tab",
 	"Gedit.TabState",
+
 	"Gedit.View",
 	"Gedit.ViewActivatable",
+
 	"Gedit.Window",
 	"Gedit.WindowActivatable",
 	"Gedit.WindowState",
 ]
 
 manual = [
+	"Gdk.DragContext",
+	"Gdk.Event",
+	"Gdk.Rectangle",
 	"Gdk.Screen",
 
-	"Gio.Menu",
+	"Gio.AsyncReadyCallback",
+	"Gio.AsyncResult",
+	"Gio.Cancellable",
 	"Gio.File",
+	"Gio.InputStream",
+	"Gio.Menu",
+	"Gio.MenuItem",
+
+	"GLib.DestroyNotify",
 
 	"Gtk.Application",
 	"Gtk.ApplicationWindow",
 	"Gtk.Bin",
 	"Gtk.Container",
 	"Gtk.Infobar",
+	"Gtk.SelectionData",
 	"Gtk.Statusbar",
 	"Gtk.TextBuffer",
 	"Gtk.TextView",
+	"Gtk.TreeView",
 	"Gtk.Widget",
 	"Gtk.Window",
+	"Gtk.WindowGroup",
 
 	"GtkSource.Buffer",
 	"GtkSource.CompressionType",

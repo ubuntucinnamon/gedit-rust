@@ -94,8 +94,8 @@ pub trait AppExt: 'static {
     #[doc(alias = "get_views")]
     fn views(&self) -> Vec<View>;
 
-    //#[doc(alias = "gedit_app_process_window_event")]
-    //fn process_window_event(&self, window: &impl IsA<Window>, event: /*Ignored*/&mut gdk::Event) -> bool;
+    #[doc(alias = "gedit_app_process_window_event")]
+    fn process_window_event(&self, window: &impl IsA<Window>, event: &mut gdk::Event) -> bool;
 
     #[doc(alias = "gedit_app_set_window_title")]
     fn set_window_title(&self, window: &impl IsA<Window>, title: &str);
@@ -129,9 +129,11 @@ impl<O: IsA<App>> AppExt for O {
         }
     }
 
-    //fn process_window_event(&self, window: &impl IsA<Window>, event: /*Ignored*/&mut gdk::Event) -> bool {
-    //    unsafe { TODO: call ffi:gedit_app_process_window_event() }
-    //}
+    fn process_window_event(&self, window: &impl IsA<Window>, event: &mut gdk::Event) -> bool {
+        unsafe {
+            from_glib(ffi::gedit_app_process_window_event(self.as_ref().to_glib_none().0, window.as_ref().to_glib_none().0, event.to_glib_none_mut().0))
+        }
+    }
 
     fn set_window_title(&self, window: &impl IsA<Window>, title: &str) {
         unsafe {

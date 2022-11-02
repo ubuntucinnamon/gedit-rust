@@ -11,6 +11,9 @@ pub use self::app_activatable::AppActivatable;
 mod document;
 pub use self::document::Document;
 
+mod encodings_combo_box;
+pub use self::encodings_combo_box::EncodingsComboBox;
+
 mod menu_extension;
 pub use self::menu_extension::MenuExtension;
 
@@ -45,6 +48,7 @@ mod enums;
 pub use self::enums::TabState;
 
 mod flags;
+pub use self::flags::DebugSection;
 pub use self::flags::WindowState;
 
 #[doc(hidden)]
@@ -63,6 +67,7 @@ pub mod traits {
 pub mod builders {
     pub use super::app::AppBuilder;
     pub use super::document::DocumentBuilder;
+    pub use super::encodings_combo_box::EncodingsComboBoxBuilder;
     pub use super::menu_extension::MenuExtensionBuilder;
     pub use super::message::MessageBuilder;
     pub use super::progress_info_bar::ProgressInfoBarBuilder;

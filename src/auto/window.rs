@@ -724,8 +724,8 @@ pub trait WindowExt: 'static {
     #[doc(alias = "gedit_window_create_tab_from_location")]
     fn create_tab_from_location(&self, location: &impl IsA<gio::File>, encoding: Option<&gtk_source::Encoding>, line_pos: i32, column_pos: i32, create: bool, jump_to: bool) -> Option<Tab>;
 
-    //#[doc(alias = "gedit_window_create_tab_from_stream")]
-    //fn create_tab_from_stream(&self, stream: /*Ignored*/&gio::InputStream, encoding: Option<&gtk_source::Encoding>, line_pos: i32, column_pos: i32, jump_to: bool) -> Option<Tab>;
+    #[doc(alias = "gedit_window_create_tab_from_stream")]
+    fn create_tab_from_stream(&self, stream: &impl IsA<gio::InputStream>, encoding: Option<&gtk_source::Encoding>, line_pos: i32, column_pos: i32, jump_to: bool) -> Option<Tab>;
 
     #[doc(alias = "gedit_window_get_active_document")]
     #[doc(alias = "get_active_document")]
@@ -747,9 +747,9 @@ pub trait WindowExt: 'static {
     #[doc(alias = "get_documents")]
     fn documents(&self) -> Vec<Document>;
 
-    //#[doc(alias = "gedit_window_get_group")]
-    //#[doc(alias = "get_group")]
-    //fn group(&self) -> /*Ignored*/Option<gtk::WindowGroup>;
+    #[doc(alias = "gedit_window_get_group")]
+    #[doc(alias = "get_group")]
+    fn group(&self) -> Option<gtk::WindowGroup>;
 
     #[doc(alias = "gedit_window_get_message_bus")]
     #[doc(alias = "get_message_bus")]
@@ -832,9 +832,11 @@ impl<O: IsA<Window>> WindowExt for O {
         }
     }
 
-    //fn create_tab_from_stream(&self, stream: /*Ignored*/&gio::InputStream, encoding: Option<&gtk_source::Encoding>, line_pos: i32, column_pos: i32, jump_to: bool) -> Option<Tab> {
-    //    unsafe { TODO: call ffi:gedit_window_create_tab_from_stream() }
-    //}
+    fn create_tab_from_stream(&self, stream: &impl IsA<gio::InputStream>, encoding: Option<&gtk_source::Encoding>, line_pos: i32, column_pos: i32, jump_to: bool) -> Option<Tab> {
+        unsafe {
+            from_glib_none(ffi::gedit_window_create_tab_from_stream(self.as_ref().to_glib_none().0, stream.as_ref().to_glib_none().0, encoding.to_glib_none().0, line_pos, column_pos, jump_to.into_glib()))
+        }
+    }
 
     fn active_document(&self) -> Option<Document> {
         unsafe {
@@ -866,9 +868,11 @@ impl<O: IsA<Window>> WindowExt for O {
         }
     }
 
-    //fn group(&self) -> /*Ignored*/Option<gtk::WindowGroup> {
-    //    unsafe { TODO: call ffi:gedit_window_get_group() }
-    //}
+    fn group(&self) -> Option<gtk::WindowGroup> {
+        unsafe {
+            from_glib_none(ffi::gedit_window_get_group(self.as_ref().to_glib_none().0))
+        }
+    }
 
     fn message_bus(&self) -> Option<MessageBus> {
         unsafe {
